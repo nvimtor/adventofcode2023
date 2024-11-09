@@ -1,5 +1,3 @@
-from dataclasses import dataclass, field
-
 strtodigit = {
   'zero': 0,
   'one': 1,
@@ -12,11 +10,6 @@ strtodigit = {
   'eight': 8,
   'nine': 9
 }
-
-# TODO
-# internal state
-# we need some sort of class / global state and api around it
-# abcdeeight
 
 def createtrie(words):
   trie = {}
@@ -100,6 +93,7 @@ def run(input):
       else:
         # we can assume it is only one match for now
         matches = finder.insert_char(char)
+
         if matches:
           digit = strtodigit[matches[-1]]
 
