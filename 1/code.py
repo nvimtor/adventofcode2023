@@ -94,20 +94,16 @@ def run(input):
     for char in line:
       if char.isdigit():
         if first is None:
-          print(f"first is none, digit here: {char}")
           first = char
 
         last = char
       else:
         # we can assume it is only one match for now
         matches = finder.insert_char(char)
-        print(f"matches are {matches}, char: {char}")
         if matches:
           digit = strtodigit[matches[-1]]
-          print(digit)
 
           if first is None and digit:
-            print('first is none...')
             first = digit
 
           last = digit
@@ -118,5 +114,3 @@ def run(input):
 
 input = getinput()
 sum = run(input)
-
-print(sum)
