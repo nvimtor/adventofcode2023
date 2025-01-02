@@ -1,3 +1,15 @@
+import tracemalloc
+
+'''
+NOTE
+some quick findings;
+we don't really need a worker.current
+because we can just calculte it from the trie.
+however, we only store the current node in the trie.
+what we can do instead is store only the letters.
+
+I am not sure, but there is a possibility that storing the current node copies the current node (not just a pointer to it, but Python might create a copy). I'd like to verify that, not sure how to though
+'''
 strtodigit = {
   'zero': 0,
   'one': 1,
@@ -26,6 +38,10 @@ def createtrie(words):
 
   return trie
 
+# TODO check if a copy happens here
+'''
+use `tracemalloc`
+'''
 class Finder:
   def __init__(self, words):
     self.trie = createtrie(words)
@@ -64,10 +80,6 @@ class Finder:
 
     return matches
 
-  def return_collected(self):
-    return self.collected
-
-
 def combinedigits(first, last):
   return (first * 10) + last
 
@@ -91,7 +103,6 @@ def run(input):
 
         last = char
       else:
-        # we can assume it is only one match for now
         matches = finder.insert_char(char)
 
         if matches:
@@ -106,5 +117,20 @@ def run(input):
 
   return sum
 
+tracemalloc.start()
 input = getinput()
 sum = run(input)
+print(sum)
+tracemalloc.stop()
+
+traced_mem = tracemalloc.get_traced_memory()
+
+print(traced_mem)
+
+'''
+NOTE
+this is how we can use tracemalloc
+ideally we can just trace part of the code, where we cpy the current trie
+
+or we can allocate the whle ccode (which i think it is better because the area impact is very small)
+'''
